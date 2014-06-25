@@ -174,7 +174,6 @@ and open the template in the editor.
             render:function(){
                 var template = _.template($('#track-template').html(), {track:this.model.toJSON()});
                 this.$el.html(template);
-//                this.getPjsInstance();
                 return this;
             },
             events:{
@@ -216,7 +215,7 @@ and open the template in the editor.
             },
             toggleSolo: function(context){
                 this.$el.toggleClass("soloActive");
-                
+
 //                console.log("this");
 //                console.log(this);
 //                console.log(this.model.collection);
@@ -234,32 +233,14 @@ and open the template in the editor.
             },
             getPjsInstance: function() {
                 var that = this;
-                var bound = false;
-                console.log("that");
-                console.log(that);
                 var id = that.model.attributes.id;
-                  console.log("proce");
-                  console.log(Processing.getInstanceById('number'+id));
                   
                 if(Processing.getInstanceById('number'+id) != undefined){
-                  console.log("proce if");
-                  console.log(Processing.getInstanceById('number'+id));
                     that.model.attributes.gainView = Processing.getInstanceById('number'+id);
-                }else{
-                  console.log("else");
-                  setTimeout(that.getPjsInstance, 250);  
+//                    return true;
                 }
-                  console.log("true");
-//                  console.log(this.model.attributes.gainView);
-//                if(that.model.attributes.gainView != undefined){
-//                  bound = true;
-////                  console.log("true");
-////                  console.log(this.pjs);
-//              }
-//                if(!bound){
-//                  setTimeout(that.getPjsInstance, 250);
-////                  console.log("bound");
-////                  console.log(this.model.attributes.gainView);
+//                else{
+//                  return false;
 //                }
             }
         });
@@ -307,13 +288,19 @@ and open the template in the editor.
                     moveFaderTo($(this), position);
                     that.collection.models[id].attributes.gain = position;
                 });
-                
+
                 _(this._trackViews).each(function(tv){
-                    console.log("tv: ");
-                    console.log(tv);
-                    tv.getPjsInstance();
+                    var done = tv.getPjsInstance();
+                    while(!done){
+                        setTimeout(function(){
+                            done = tv.getPjsInstance();
+                        }.bind(tv), 250);
+                        
+                        
+                        done = true;                                //hardCoded!!
+                    }
+                    console.log(tv.model.attributes);
                 });
-                
             },
             events:{
                 'click .audioApiPlay': 'playBufferList',
@@ -321,10 +308,10 @@ and open the template in the editor.
                 'click .btn.solo': 'toogleSolo',
                 'mousedown .faderChannel': 'changeGainTrack'
             },
-            playBufferList: function(){                
+            playBufferList: function(){
                 var TrackList = this.bufferLoader.attributes.bufferList;
                 for (var i=0; i< TrackList.length; i++){
-                    this.bufferLoader.attributes.sourceArray[i] = context.createBufferSource();
+                    this.bufferLoader.attributes.sourceArray[i] = context.createBufferSource(); //in initialize?
                     this.bufferLoader.attributes.gainNodeArray[i] = context.createGain();
 
                     this.bufferLoader.attributes.sourceArray[i].buffer = TrackList[i];
@@ -382,7 +369,7 @@ and open the template in the editor.
         var router = new Router();
             router.on('route:home', function(){
                 busView.render();
-        });   
+        });
         
         Backbone.history.start();
 
