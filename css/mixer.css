@@ -1,0 +1,76 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 08-Jun-2014, 10:55:55
+    Author     : ljoglar
+*/
+
+.mixerDesk{
+   width: 430px;
+    height: 325px;
+    padding: 50px 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+.mixerDesk ul{
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.channelMixer{
+    width: 70px;
+    height: 320px;
+    float: left;
+    margin: 5px;
+}
+
+.nameChannelMixer{
+    position: absolute;
+    bottom: -25px;
+    left: 10px;
+}
+
+.faderChannelMixer{
+    width: 68px;
+    height: 215px;
+    float: left;
+    background-image: url(../img/scalefader250.png);
+    background-repeat:no-repeat;
+    background-position-y: -17px;
+    background-position-x: -3.5px;
+    border-style:solid;
+    border-color:#b7b7b7;
+    border-radius:8px;
+    border-width: 1px;
+    position: absolute;
+}
+
+.faderChannel{
+    background-image: url(../img/fader30px.png);
+    background-repeat:no-repeat;
+    width: 30px !important;
+    height: 52px !important;
+    margin: auto;
+    position: absolute;
+    left: 17px;
+}
+
+.channelMixer .btn-xs{
+/*    margin: 5px 0 5px 23px;*/
+    display:block;
+    margin: 7px auto;
+}
+
+
+.channelMixer .btn-mini.active{
+    -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.30), 0 1px 2px rgba(0,0,0,.05) !important;
+}
