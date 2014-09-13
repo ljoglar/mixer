@@ -8,9 +8,25 @@ and open the template in the editor.
     Author     : ljoglar
 */
 
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+}
+
+.container{
+    height: 100%;
+}
+
+.page{
+    background-image:url(../img/wood-bg.jpg);
+}
+
 .mixerDesk{
-   width: 430px;
-    height: 325px;
+    width: 430px;
+    height: 550px;
     padding: 50px 0;
     margin-left: auto;
     margin-right: auto;
@@ -33,10 +49,67 @@ and open the template in the editor.
     margin: 5px;
 }
 
-.nameChannelMixer{
+.nameChannelMixer span{
+    margin: 10px 20px;
     position: absolute;
-    bottom: -25px;
-    left: 10px;
+    font: 600 1.3em/150% 'Shadows Into Light Two', Helvetica, Sans-serif;
+}
+
+.nameChannelMixer{
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 7px;
+
+    width: 82px;
+    height: 45px;
+    position: absolute;
+    bottom: -50px;
+    left: -5px;
+}
+
+.nameChannelMixer.strip1{
+    background-image: url(../img/strip1.png);
+/*    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 7px;
+
+    width: 70px;
+    height: 35px;
+    position: absolute;
+    bottom: -40px;
+*/}
+
+.nameChannelMixer.strip2{
+    background-image: url(../img/strip2.png);
+/*    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 7px;
+    width: 70px;
+    height: 35px;
+    position: absolute;
+    bottom: -40px;*/
+}
+
+.nameChannelMixer.strip3{
+    background-image: url(../img/strip3.png);
+/*    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 7px;
+    width: 70px;
+    height: 35px;
+    position: absolute;
+    bottom: -40px;*/
+}
+
+.nameChannelMixer.strip4{
+    background-image: url(../img/strip4.png);
+/*    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 7px;
+    width: 70px;
+    height: 35px;
+    position: absolute;
+    bottom: -40px;*/
 }
 
 .faderChannelMixer{
@@ -62,6 +135,7 @@ and open the template in the editor.
     margin: auto;
     position: absolute;
     left: 17px;
+    bottom: 120px;
 }
 
 .channelMixer .btn-xs{

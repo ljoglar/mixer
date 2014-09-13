@@ -1,4 +1,4 @@
-int number = 0.5;
+int number = 0.75;
 
 void setup()
 {
