@@ -18,6 +18,7 @@ var BusView = Backbone.View.extend({
 		trackView.render();
 		// Get Processing instance
 		this.getPjsInstance(trackView);
+		this.getPjsInstance(trackView, "eq");
 		$('.mixerDesk ul').append(trackView.el);
 	},
 
@@ -63,15 +64,15 @@ var BusView = Backbone.View.extend({
 		}, this);
 	},
 
-	getPjsInstance: function(trackView){
-		var done = trackView.getPjsInstance();
+	getPjsInstance: function(trackView, type){
+		type = (type !== undefined) ? type : "number";
+		var done = trackView.getPjsInstance(type);
 		while(!done){
 			setTimeout(function(){
-				done = trackView.getPjsInstance();
+				done = trackView.getPjsInstance(type);
 			}.bind(trackView), 250);
 			done = true;                                //hardCoded!! -> so we
 		}
-		console.log(trackView.model.attributes);
 	},
 
 

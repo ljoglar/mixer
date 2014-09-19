@@ -64,26 +64,27 @@ and open the template in the editor.
 				
 
 				<div class="modal fade" id="eq<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				        <h4 class="modal-title" id="myModalLabel">Equalizer</h4>
-				      </div>
-				      <div class="modal-body">
-				        <div class="eqControls">
-							Filter on: <input id="filterOn" type="checkbox"></br></br>
-							Frequency: <input id="frequency" type="range" min="0" max="1" step="0.01" value="1"></br>
-							Gain: <input id="gain" type="range" min="-40" max="40" step="0.01" value="0"></br>
-							Q: <input id="Q" type="range" min="0.0001" max="1000" step="0.01" value="1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel">Equalizer</h4>
+							</div>
+							<canvas id="eq<%= track.id %>" data-processing-sources="pde/parabola.pde"></canvas>
+							<div class="modal-body">
+								<div class="eqControls">
+									Filter on: <input id="filterOn" type="checkbox"></br></br>
+									Frequency: <input id="frequency" type="range" min="0" max="1" step="0.01" value="1"></br>
+									Gain: <input id="gain" type="range" min="-40" max="40" step="0.01" value="0"></br>
+									Q: <input id="Q" type="range" min="0.0001" max="1000" step="0.01" value="1">
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							    <button type="button" class="btn btn-primary">Save changes</button>
+							</div>
 						</div>
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary">Save changes</button>
-				      </div>
-				    </div>
-				  </div>
+					</div>
 				</div>
 
 
@@ -122,7 +123,7 @@ and open the template in the editor.
 		<script src="js/collections/Bus.js"></script>
 		
 		<script src="js/views/BusView.js"></script>
-		<script src="js/views/TrackView"></script>
+		<script src="js/views/TrackView.js"></script>
 		
 		<script src="js/router.js"></script>
 

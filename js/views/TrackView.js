@@ -123,39 +123,54 @@ var TrackView = Backbone.View.extend({
 	},
 
 	changeFrequency: function(context){
-		console.log(context.currentTarget.value);
 		var id = this.model.attributes.id - 1;
-
 		var f = context.currentTarget.value*20000 + 20;
-		console.log(f);
-
 		var loaderTrack = MixerApp.busView.bufferLoader.models[id];
+
+		MixerApp.busView.collection.models[id].attributes.eqView.changeFrequency(f);
 		loaderTrack.attributes.filterNode.frequency.value = f;
 	},
 	
 	changeGain: function(context){
-		console.log(context.currentTarget.value);
 		var id = this.model.attributes.id - 1;
 		var loaderTrack = MixerApp.busView.bufferLoader.models[id];
+
+		MixerApp.busView.collection.models[id].attributes.eqView.changeGain(context.currentTarget.value);
 		loaderTrack.attributes.filterNode.gain.value = context.currentTarget.value;
 	},
 	
 	changeQ: function(context){
-		console.log(context.currentTarget.value);
 		var id = this.model.attributes.id - 1;
 		var loaderTrack = MixerApp.busView.bufferLoader.models[id];
+
+		MixerApp.busView.collection.models[id].attributes.eqView.changeQ(context.currentTarget.value);
 		loaderTrack.attributes.filterNode.Q.value = context.currentTarget.value;
 	},
 
-	getPjsInstance: function() {
+	getPjsInstance: function(type) {
 		var id = this.model.attributes.id;
-		  
-		if(Processing.getInstanceById('number'+id) != undefined){
-			this.model.attributes.gainView = Processing.getInstanceById('number'+id);
-//			return true;
+		switch(type){
+			case "number":
+			console.log("num");
+				if(Processing.getInstanceById('number'+id) != undefined){
+					this.model.attributes.gainView = Processing.getInstanceById('number'+id);
+		//			return true;
+				}
+		//		else{
+		//			return false;
+		//		}
+				break;
+			case "eq":
+			console.log("eq");
+				if(Processing.getInstanceById('number'+id) != undefined){
+					this.model.attributes.eqView = Processing.getInstanceById('eq'+id);
+		//			return true;
+				}
+		//		else{
+		//			return false;
+		//		}
+				break;
 		}
-//		else{
-//			return false;
-//		}
+
 	}
 });
