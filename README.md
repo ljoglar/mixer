@@ -1,7 +1,4 @@
-mixer
-=====
 
-Web Audio API Online Mixer
 <div>
 				<h1>About this Project</h1>
 				<hr />
