@@ -12,6 +12,7 @@
 				    <li><b>backbone.js!</b> (to build the Model-Collections-View structure)</li>
 				</ul>
 
+				You can find this project on <a href="https:github.com/lljoglar/mixer" target="_blank"> github</a>
 			</div>
 
 			<div>
@@ -36,10 +37,13 @@
 				<ul>
 				    <li><b>(on development) Equalizer:</b> each track has an equalizer to modify the frequency spectrum.</li>
 				    <li><b>(on development) Firefox support: </b> there are some features not working properly on firefox.</li>
-				    <li>the latest <b>HTML5 web Audio API</b></li>
-				    <li><b>HTML5 canvas</b> (using <b>processing.js</b>)</li>
-				    and
-				    <li><b>backbone.js!</b> (to build the Model-Collections-View structure)</li>
+				    <li><b>Stop and Pause buttons</b></li>
+				    <li><b>File uploader:</b> possibility to upload files from computer and create a track for each one.</li>
+				    <li><b>Panning Knob</b> </li>
+				    <li><b>Effects</b> </li>
+				    <li><b>Wave visualizer:</b> representation of the wave form of each track.</li>
+				    <li><b>Save project:</b> Possibility to save the paramaters of each element on each track to reload it. </li>
+				    <li><b>User account:</b> Possibility of having a user account to save and share the projects.</li>
 				</ul> 
 			</div>
 
@@ -48,16 +52,11 @@
 				<hr />
 				This project is a learning project, under MIT license.
 				If you are interested in my project, you would like to implement it or support me to continue it, please contact me
-				on <a href="mailto:luis@luisjoglar.com" target="_top">luis@luisjoglar.com</a> 
-				or <a href="https:twitter.com/luisjoglar" target="_blank"> twitter</a>
-				or <a href="https:github.com/lljoglar" target="_blank"> github</a>
+				on:
 				<ul>
-				    <li><b>(on development) Equalizer:</b> each track has an equalizer to modify the frequency spectrum.</li>
-				    <li><b>(on development) Firefox support: </b> there are some features not working properly on firefox.</li>
-				    <li>the latest <b>HTML5 web Audio API</b></li>
-				    <li><b>HTML5 canvas</b> (using <b>processing.js</b>)</li>
-				    and
-				    <li><b>backbone.js!</b> (to build the Model-Collections-View structure)</li>
+				    <li><a href="mailto:luis@luisjoglar.com" target="_top">luis@luisjoglar.com</a> </li>
+				    <li><a href="https:twitter.com/luisjoglar" target="_blank"> twitter</a></li>
+				    <li> <a href="https:github.com/lljoglar" target="_blank"> github</a></li>
 				</ul> 
 			</div>
 		</div>
