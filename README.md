@@ -12,7 +12,6 @@
 				    <li><b>backbone.js!</b> (to build the Model-Collections-View structure)</li>
 				</ul>
 
-				You can find this project on <a href="https:github.com/lljoglar/mixer" target="_blank"> github</a>
 			</div>
 
 			<div>
