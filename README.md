@@ -1,4 +1,4 @@
-
+<div>
 <div>
 				<h1>About this Project</h1>
 				<hr />
@@ -62,3 +62,4 @@
 				</ul> 
 			</div>
 		</div>
+</div>
