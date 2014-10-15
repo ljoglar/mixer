@@ -55,8 +55,8 @@
 				on:
 				<ul>
 				    <li><a href="mailto:luis@luisjoglar.com" target="_top">luis@luisjoglar.com</a> </li>
-				    <li><a href="https:twitter.com/luisjoglar" target="_blank"> twitter</a></li>
-				    <li> <a href="https:github.com/lljoglar" target="_blank"> github</a></li>
+				    <li><a href="https://www.twitter.com/luisjoglar" target="_blank"> twitter</a></li>
+				    <li> <a href="https://www.github.com/lljoglar" target="_blank"> github</a></li>
 				</ul> 
 			</div>
 		</div>
