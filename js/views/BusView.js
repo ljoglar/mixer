@@ -1,9 +1,12 @@
 
 
 var BusView = Backbone.View.extend({
+	// tagName: "ul",
+	// className: "mixerTracks",
 	initialize: function(){
 		window.AudioContext = window.AudioContext||window.webkitAudioContext;
 		this.context = new AudioContext();
+
 	},
 
 	start:function(){
@@ -14,17 +17,26 @@ var BusView = Backbone.View.extend({
 	},
 	
 	addOne: function(track){
-		var trackView = new TrackView({ model : track });		
+		var trackView = new TrackView({ model : track });
 		trackView.render();
 		// Get Processing instance
 		this.getPjsInstance(trackView);
 		this.getPjsInstance(trackView, "eq");
-		$('.mixerDesk ul').append(trackView.el);
+		$(' ul.mixerTracks').append(trackView.el);
+
+		if(track.attributes.isMidi){
+			this.getPjsInstance(trackView, "synth");
+		}
 	},
 
 	addLoaderTrack: function(track){
-		var loaderTrack = new LoaderTrack({id: track.attributes.id, context: this.context, url:track.attributes.src});
-		this.bufferLoader.add(loaderTrack);
+		if(! track.attributes.isMidi){
+			var loaderTrack = new LoaderTrack({id: track.attributes.id, context: this.context, url:track.attributes.src});
+		}
+		else{
+			var loaderTrack = new LoaderTrack({id: track.attributes.id, context: this.context, });
+		}
+			this.bufferLoader.add(loaderTrack);
 	},
 	
 	render:function(){
@@ -34,11 +46,12 @@ var BusView = Backbone.View.extend({
 		this.$el.html(template);
 		
 		this.collection.forEach(this.addOne, this);
-
 	},
 
 	events:{
 		'click .audioApiPlay': 'playBufferList',
+		'click .audioApiStop': 'stopBufferList',
+		'click .audioApiLoop': 'loopBufferList',
 		'click .btn.mute': 'toogleMute',
 		'click .btn.solo': 'toogleSolo',
 		'mousedown .faderChannel': 'changeGainTrack'
@@ -46,22 +59,73 @@ var BusView = Backbone.View.extend({
 
 	playBufferList: function(){
 		this.bufferLoader.forEach(function(loaderTrack){
-			loaderTrack.attributes.src = this.context.createBufferSource();
-			loaderTrack.attributes.gainNode = this.context.createGain();
-
-			loaderTrack.attributes.src.buffer =  loaderTrack.attributes.buffer;
-
-			loaderTrack.attributes.src.connect(loaderTrack.attributes.gainNode);
-			loaderTrack.attributes.gainNode.connect(this.context.destination);
-
 			var id = loaderTrack.attributes.id -1;
+			var that = this;
+			if(! this.collection.models[id].attributes.isMidi){
+				loaderTrack.attributes.src = this.context.createBufferSource();
+				loaderTrack.attributes.gainNode = this.context.createGain();
+				loaderTrack.attributes.panNode = this.context.createStereoPanner();
+				loaderTrack.attributes.src.buffer =  loaderTrack.attributes.buffer;
+				loaderTrack.attributes.src.connect(loaderTrack.attributes.gainNode);
+				// loaderTrack.attributes.gainNode.connect(this.context.destination);
+				loaderTrack.attributes.gainNode.connect(loaderTrack.attributes.panNode);
+				loaderTrack.attributes.panNode.connect(this.context.destination);
+				loaderTrack.attributes.src.start(0);
+			}
+			else{
+				var offsettime = this.context.currentTime;
+				var shapes = this.collection.models[id].attributes.shapes;
+				shapes.forEach(function(shape){
+					loaderTrack.attributes.src = that.context.createOscillator();
+					loaderTrack.attributes.gainNode = that.context.createGain();
+					loaderTrack.attributes.panNode = that.context.createStereoPanner();
+					loaderTrack.attributes.src.type = loaderTrack.attributes.type;
+					loaderTrack.attributes.src.frequency.value = loaderTrack.attributes.freq;
+					loaderTrack.attributes.src.connect(loaderTrack.attributes.gainNode);
+					// loaderTrack.attributes.gainNode.connect(that.context.destination);
+					loaderTrack.attributes.gainNode.connect(loaderTrack.attributes.panNode);
+					loaderTrack.attributes.panNode.connect(that.context.destination);
+					
+					loaderTrack.attributes.src.frequency.value = (that.whichnote(shape.y, 50)); // Generate sound instantly
+					loaderTrack.attributes.src.start(offsettime+shape.x/100); // Generate sound	
+					loaderTrack.attributes.src.stop(offsettime+(shape.x/100)+0.5); // Stop sound
+				});
+			}
 			loaderTrack.attributes.gainNode.gain.value = this.collection.models[id].attributes.gain;
-			loaderTrack.attributes.src.start(0);
-
 			this.collection.models[id].attributes.isSolo = false;
 			this.collection.models[id].attributes.isMuted = false;
+		}, this);
+	},
+	
+	stopBufferList: function(){
+		this.bufferLoader.forEach(function(loaderTrack){
+			var id = loaderTrack.attributes.id -1;
+			if(! this.collection.models[id].attributes.isMidi){
+				loaderTrack.attributes.src.stop(0);
+			}
+			else{
+				var shapes = this.collection.models[id].attributes.shapes;
+				shapes.forEach(function(shape){
+					loaderTrack.attributes.src.stop(0); // Stop sound
+				});
+			}
+		}, this);
+	},
+
+	loopBufferList: function(){
+		this.bufferLoader.forEach(function(loaderTrack){
+			var id = loaderTrack.attributes.id -1;
+			loaderTrack.attributes.src.loop = !loaderTrack.attributes.src.loop;
 
 		}, this);
+	},
+
+	whichnote: function (shapey,shapesize) { // This is a local function which returns the note frequency
+		var notenum = shapey/shapesize;
+		var freq
+		freq = 440 * Math.pow(2,((notenum)/12)); // Convert from MIDI to hertz
+		console.log('shapey %d shapesize %d notenum %d freq %d',shapey,shapesize,notenum,freq)
+		return(freq);
 	},
 
 	getPjsInstance: function(trackView, type){

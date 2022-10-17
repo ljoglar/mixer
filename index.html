@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+	<head>
+		<title>Audio Mixer</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<link rel="icon" type="image/png" href="img/fader30px.png">
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">      --> 
+		<link rel="stylesheet" href="css/mixer.css">
+		
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Shadows+Into+Light+Two" />
+		<!-- // <script data-main="js/main" src="js/libs/require/require.js"></script> -->
+
+
+	</head>
+	<body> 
+		<div class="container">
+			<h1>Audio Mixer</h1>
+			<hr />
+			<div class="page">
+				
+				<div>
+					<div>
+						<!--<canvas data-processing-sources="pde/test.pde"></canvas>-->
+						<!-- <canvas id="number1" data-processing-sources="pde/number.pde"></canvas> -->
+					</div>
+					<div class="mixerDesk">
+						<ul class="mixerTracks" id="mixerTracks">
+
+						</ul>
+					</div> <!-- /mixerDesk -->
+				</div>
+
+				<div class="modal fade" id="addTrackModal" tabindex="-1" role="dialog" aria-labelledby="addTrackModal" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="addTrackModal">New Track</h4>
+							</div>
+							<div class="addTrackTabs" role="tabpanel">
+							  <!-- Nav tabs -->
+							  <ul class="nav nav-tabs" role="tablist">
+							     <li role="presentation" class="tabTrackModal audioTab active" option="audioTab"><a href="#audioTab" aria-controls="audioTab" role="tab" data-toggle="tab">Audio</a></li>
+							    <li role="presentation" class="tabTrackModal midiTab" option="midiTab"><a href="#midiTab" aria-controls="midiTab" role="tab" data-toggle="tab">Midi</a></li>
+							  </ul>
+							  <!-- Tab panes -->
+							  <div class="tab-content">
+							    <div role="tabpanel" class="tab-pane audioOption active" id="audioTab">
+							    	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									  <div class="panel panel-default">
+									    <div class="panel-heading" role="tab" id="headingOne">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSample" aria-expanded="true" aria-controls="collapseSample">
+									          Select a sample
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="collapseSample" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+									      <div class="panel-body">
+									        <div class="list-group">
+												<a href="#" class="list-group-item" id="drums">Drums</a>
+												<a href="#" class="list-group-item" id="bass">Bass</a>
+												<a href="#" class="list-group-item" id="guitar">Guitar</a>
+												<a href="#" class="list-group-item" id="piano">Piano</a>
+												<a href="#" class="list-group-item" id="brass">Brass</a>
+											</div>
+									      </div>
+									    </div>
+									  </div>
+									  <div class="panel panel-default">
+									    <div class="panel-heading" role="tab" id="headingTwo">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
+									        Upload your own file (coming soon)
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="collapseFile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									      <div class="panel-body">
+									          <div class="inputFile">
+										        <label for="inputFile">File input</label>
+										        <!-- <input type="file" id="inputFile"> -->
+										        <input type="file" id="files" name="files[]"/>
+										        
+										      </div>
+									      </div>
+									    </div>
+									  </div>
+							    	</div>
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="midiTab"> <h2> This option will create an Oscillator. </h2> You will be able to edit the sequencer and the oscillator type.</div>
+							  </div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							    <button type="button" onclick="newTrack();" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<?php
+		// put your code here
+		
+				// <canvas id="number<%= track.id %>" data-processing-sources="pde/number.pde"></canvas>
+		?>
+		
+		<script type="text/template" id="track-template">
+				
+				<div class="input-group">
+					<input id="filterOn" type="checkbox" style="float:left; margin: 10px 5px 0 12px;">
+					<button class="btn btn-xs btn-default eq" data-toggle="modal" data-target="#eq<%= track.id %>" id="<%= track.id %>" type="button">eq</button>
+				</div>
+				<div class="input-group">
+					<input id="delayOn" type="checkbox" style="float:left; margin: 10px 5px 0 12px;">
+					<button type="button" class="btn btn-xs btn-default delay" data-toggle="modal" data-target="#delay<%= track.id %>" id="<%= track.id %>" >delay</button>
+				</div>
+
+				<input id="FXOn" target="FXOn<%= track.id %>" type="checkbox" style="float:left; margin: 10px 5px 0 12px;">
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-xs btn-default buttonName" data-toggle="modal" id="<%= track.id %>">Insert1</button>
+					<button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<ol class="dropdown-menu" role="menu">
+						<li class="FXoption" id="noiseConv"><a href="#">Noise Convolver</a></li>
+						<li class="FXoption" id="bitCrusher"><a href="#">Bit Crusher</a></li>
+						<li class="FXoption" id="reverb"><a href="#">Reverb</a></li>
+					</ol>
+				</div>
+				<div class="panChannelMixer" id="<%= track.id %>">
+					<input id="pan" type="range" min="-45" max="45" step="0.1" value="0">
+				</div>
+
+				<button class="btn btn-xs btn-warning solo" id="<%= track.id %>" type="button">solo</button>
+				<button class="btn btn-xs btn-success mute" id="<%= track.id %>" type="button">mute</button>
+				
+				<% if(track.isMidi){%>
+					<button class="btn btn-xs btn-info midi" data-toggle="modal" data-target="#midi<%= track.id %>" id="<%= track.id %>" type="button">synth</button>
+				<%}%>
+
+				
+				<div class="faderChannelMixer" id="<%= track.id %>">
+					<div class="faderChannel" id="<%= track.id %>"></div>
+					<div class="nameChannelMixer strip<%=_.random(1,4)%>"><span><%= track.name %></span></div>
+				</div>
+
+				<div class="modal fade" id="eq<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel"><%= track.name %>: Equalizer</h4>
+							</div>
+							<canvas id="eq<%= track.id %>" data-processing-sources="pde/parabola.pde"></canvas>
+							<div class="modal-body">
+								<div class="eqControls">
+									Filter on: <input id="filterOn" type="checkbox"></br></br>
+									Frequency: <input id="frequency" type="range" min="0" max="1" step="0.01" value="1"></br>
+									Gain: <input id="gain" type="range" min="-40" max="40" step="0.01" value="0"></br>
+									Q: <input id="Q" type="range" min="0.0001" max="1000" step="0.01" value="1">
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							    <button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade" id="delay<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel"><%= track.name %>: Delay</h4>
+							</div>
+							<div class="modal-body">
+								<div class="delayControls">
+									Delay on: <input id="delayOn" type="checkbox"></br></br>
+									Time: <input id="time" type="range" min="0" max="2" step="0.001" value="0.5"></br>
+									Feedback: <input id="feedback" type="range" min="0" max="1" step="0.01" value="0.5"></br>
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							    <button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade midiSynth" id="midi<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel">Synth</h4>
+							</div>
+							<div class="midiCanvasContainer">
+								<canvas id="synthCanvas<%= track.id %>" width="1500" height="300"></canvas>
+							</div>
+							<div class="modal-body">
+								<div class="synthOscillator type"><span>Oscillator Type</span>
+									<input type="radio" name="synthOscillator" value="sine" checked>sine
+									<input type="radio" name="synthOscillator" value="sawtooth">sawtooth
+									<input type="radio" name="synthOscillator" value="square">square
+									<input type="radio" name="synthOscillator" value="triangle">triangle
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+							<%//    <button type="button" class="btn btn-primary">Save changes</button> %>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="modal fade noiseConv" id="noiseConv<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel"><%= track.name %>: Noise Convolver</h4>
+							</div>
+							<div class="modal-body">
+								<div class="noiseConvControls">
+									Seconds of noise (from 0s to 5s): <input class="" id="noiseSec" type="range" min="0" max="5" step="0.01" value="0.7"></br>
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade bitCrusher" id="bitCrusher<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel"><%= track.name %>: Bit Crusher</h4>
+							</div>
+							
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade reverb" id="reverb<%= track.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							    <h4 class="modal-title" id="myModalLabel"><%= track.name %>: Convolution Reverb </h4>
+							</div>
+							<div class="modal-body">
+								<div class="reverb type"><span>Reverb Impulse Response</span></br>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="0" checked>
+										<span>1s</span>
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="1">
+										<span>1.5s</span>
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="2">
+										<span>3s</span>
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="3">
+										<span>spring</span>
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="4">
+										<span>vinyl</span>
+									  </label>
+									</div>
+									<div class="radio">
+									  <label>
+									    <input class="reverbInput" type="radio" name="reverb" id="reverb" value="5">
+										<span>stairway</span>
+									  </label>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+		</script>
+		
+		<script type="text/template" id="mixer-template">
+			<div class="controlsMixer">
+				<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#addTrackModal">Add Track</button>
+				<button class="btn btn-sm btn-success audioApiStop" id="stop" type="button">stop</button>
+				<button class="btn btn-sm btn-warning audioApiPlay" id="play" type="button">play</button>
+				<button class="btn btn-sm btn-primary audioApiLoop" id="loop" type="button">loop</button>
+			</div>
+			<div class="mixerTracksContainer">
+				<ul class="mixerTracks">
+				</ul>
+			</div>
+		</script>
+		
+		<script src="js/libs/jquery.min.js"></script>
+		<!-- // <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+		<script src="js/libs/underscore-min.js"></script>
+		<!-- // <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script> -->
+
+		<script src="js/libs/backbone-min.js"></script>
+		<!-- // <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script> -->
+		
+		<script src="js/libs/processing.min.js"></script>
+		<!-- // <script src="//cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script> -->
+
+		<!-- <script src="////cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/modal.js"></script> -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+		<!-- Backbone files -->
+		<script src="js/models/LoaderTrack.js"></script>
+		<script src="js/models/Track.js"></script>
+
+		<script src="js/collections/BufferLoader.js"></script>
+		<script src="js/collections/Bus.js"></script>
+		
+		<script src="js/views/BusView.js"></script>
+		<script src="js/views/TrackView.js"></script>
+		
+		<script src="js/router.js"></script>
+
+		<!-- // <script src="templates/mixer-template.js"></script> -->
+		<!-- // <script src="templates/track-template.js"></script> -->
+
+		<script src="js/main.js"></script>
+
+	</body>
+</html>

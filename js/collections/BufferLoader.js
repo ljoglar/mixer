@@ -1,8 +1,5 @@
 
 var BufferLoader = Backbone.Collection.extend({
-	
-
-
 	load: function(){
 		this.models.forEach(this.loadBuffer, this);
 
@@ -46,6 +43,7 @@ var BufferLoader = Backbone.Collection.extend({
 		};
 		request.send();
 	},
+
 	finishedLoading: function(loaderTrackUrl) {
 		console.log("Finished Loading: " + loaderTrackUrl);
 	}
